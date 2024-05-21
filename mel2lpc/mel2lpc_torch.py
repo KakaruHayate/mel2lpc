@@ -12,18 +12,23 @@ class PreEmphasis(torch.nn.Module):
         self.register_buffer('kernel', torch.tensor([-coefficient, 1.], dtype=torch.float32).unsqueeze(0).unsqueeze(0))
 
     def forward(self, signal):
+        '''
+        Input:
+            signal: [B, 1, T]
+        Returns:
+            signal: [B, 1, T]
+        '''
         return F.conv1d(signal, self.kernel)
 
 
 class Audio2Mel(torch.nn.Module):
     def __init__(self, sampling_rate, hop_length, win_length, n_fft=None, 
-                 n_mel_channels=128, mel_fmin=0, mel_fmax=None, clamp=1e-5, cpt_lpc=True, mel_base='e'):
+                 n_mel_channels=128, mel_fmin=0, mel_fmax=None, clamp=1e-5, mel_base='e'):
         super().__init__()
 
         n_fft = win_length if n_fft is None else n_fft
 
         self.mel_base = mel_base
-        self.cpt_lpc = cpt_lpc
         self.sampling_rate = sampling_rate
         self.hop_length = hop_length
         self.win_length = win_length
@@ -44,7 +49,7 @@ class Audio2Mel(torch.nn.Module):
         Input:
             audio: [B, 1, T]
         Returns:
-            log_mel_spec: [B, M, T] 
+            log_mel_spec: [B, T, M] 
         '''
         factor = 2 ** (keyshift / 12)       
         n_fft_new = int(np.round(self.n_fft * factor))
