@@ -199,7 +199,7 @@ class Mel2LPC(torch.nn.Module):
 def LPC2Wav(lpc_ctrl, wav, lpc_order, clip_lpc):
     '''
     lpc_ctrl: [1, lpc_order, T]
-    wav: [B, C, T]
+    wav: [1, C, T]
     lpc_order: int
     clip_lpc:bool
 
