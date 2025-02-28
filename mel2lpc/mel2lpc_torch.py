@@ -18,7 +18,7 @@ class PreEmphasis(torch.nn.Module):
         Returns:
             signal: [B, 1, T]
         '''
-        return F.conv1d(signal, self.kernel)
+        return F.conv1d(signal, self.kernel, padding=1)
 
 
 class Audio2Mel(torch.nn.Module):
